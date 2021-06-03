@@ -6,6 +6,11 @@ conan_basic_setup()
 
 add_library(${PROJECT_NAME} source_subfolder/re.c)
 set_target_properties(${PROJECT_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
+if(RE_DOT_MATCHES_NEWLINE)
+    target_compile_definitions(${PROJECT_NAME} PUBLIC RE_DOT_MATCHES_NEWLINE=1)
+else()
+    target_compile_definitions(${PROJECT_NAME} PUBLIC RE_DOT_MATCHES_NEWLINE=0)
+endif()
 
 include(GNUInstallDirs)
 install(

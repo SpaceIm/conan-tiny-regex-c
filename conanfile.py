@@ -15,10 +15,12 @@ class TinyregexcConan(ConanFile):
     options = {
         "shared": [True, False],
         "fPIC": [True, False],
+        "dot_matches_newline": [True, False],
     }
     default_options = {
         "shared": False,
         "fPIC": True,
+        "dot_matches_newline": True,
     }
 
     exports_sources = "CMakeLists.txt"
@@ -47,6 +49,7 @@ class TinyregexcConan(ConanFile):
         if self._cmake:
             return self._cmake
         self._cmake = CMake(self)
+        self._cmake.definitions["RE_DOT_MATCHES_NEWLINE"] = self.options.dot_matches_newline
         self._cmake.configure()
         return self._cmake
 
@@ -61,3 +64,4 @@ class TinyregexcConan(ConanFile):
 
     def package_info(self):
         self.cpp_info.libs = ["tiny-regex-c"]
+        self.cpp_info.defines = ["RE_DOT_MATCHES_NEWLINE={}".format("1" if self.options.dot_matches_newline else "0")]
